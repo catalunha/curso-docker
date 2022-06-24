@@ -314,3 +314,7 @@ catalunha@pop-os:~/dockers/email-worker$ docker-compose logs -f -t
 
 # 5
 catalunha@pop-os:~/dockers/email-worker$ docker-compose exec db psql -U postgres -d email_sender -c 'select * from emails'
+
+# 6
+catalunha@pop-os:~/dockers/email-worker$ docker-compose up -d --scale worker=3
+catalunha@pop-os:~/dockers/email-worker$ docker-compose logs -f -t worker
