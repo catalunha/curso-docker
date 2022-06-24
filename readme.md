@@ -232,3 +232,84 @@ modo de rede host
 após criar as aplicações e o docker compose
 * catalunha@pop-os:~/dockers/node-mongo-nginx$ docker-compose up
 
+# Seção 9 - Email com workers
+## 1
+Após criar o arquivo docker-compose.yml
+executar com
+catalunha@pop-os:~/dockers/email-worker$ docker-compose up -d
+o -d é modo daemon
+listando processos no compose
+catalunha@pop-os:~/dockers/email-worker$ docker-compose ps
+      Name                     Command              State    Ports  
+--------------------------------------------------------------------
+email-worker_db_1   docker-entrypoint.sh postgres   Up      5432/tcp
+
+listando tables
+
+catalunha@pop-os:~/dockers/email-worker$ docker-compose exec db psql -U postgres -c '\l'
+                                 List of databases
+   Name    |  Owner   | Encoding |  Collate   |   Ctype    |   Access privileges   
+-----------+----------+----------+------------+------------+-----------------------
+ postgres  | postgres | UTF8     | en_US.utf8 | en_US.utf8 | 
+ template0 | postgres | UTF8     | en_US.utf8 | en_US.utf8 | =c/postgres          +
+           |          |          |            |            | postgres=CTc/postgres
+ template1 | postgres | UTF8     | en_US.utf8 | en_US.utf8 | =c/postgres          +
+           |          |          |            |            | postgres=CTc/postgres
+(3 rows)
+
+catalunha@pop-os:~/dockers/email-worker$ docker compose down
+[+] Running 2/2
+ ⠿ Container email-worker_db_1   Removed                                                                                         0.4s
+ ⠿ Network email-worker_default  Removed                                                                                         0.2s
+
+## 2
+catalunha@pop-os:~/dockers/email-worker$ docker-compose ps
+Name   Command   State   Ports
+------------------------------
+
+catalunha@pop-os:~/dockers/email-worker$ docker-compose up -d
+Creating network "email-worker_default" with the default driver
+Creating volume "email-worker_dados" with default driver
+Creating email-worker_db_1 ... done
+
+catalunha@pop-os:~/dockers/email-worker$ docker-compose exec db psql -U postgres -f /scripts/check.sql
+                                  List of databases
+     Name     |  Owner   | Encoding |  Collate   |   Ctype    |   Access privileges   
+--------------+----------+----------+------------+------------+-----------------------
+ email_sender | postgres | UTF8     | en_US.utf8 | en_US.utf8 | 
+ postgres     | postgres | UTF8     | en_US.utf8 | en_US.utf8 | 
+ template0    | postgres | UTF8     | en_US.utf8 | en_US.utf8 | =c/postgres          +
+              |          |          |            |            | postgres=CTc/postgres
+ template1    | postgres | UTF8     | en_US.utf8 | en_US.utf8 | =c/postgres          +
+              |          |          |            |            | postgres=CTc/postgres
+(4 rows)
+
+You are now connected to database "email_sender" as user "postgres".
+                                    Table "public.emails"
+  Column  |            Type             |                      Modifiers                      
+----------+-----------------------------+-----------------------------------------------------
+ id       | integer                     | not null default nextval('emails_id_seq'::regclass)
+ data     | timestamp without time zone | not null default now()
+ assunto  | character varying(100)      | not null
+ mensagem | character varying(250)      | not null
+
+## 3
+catalunha@pop-os:~/dockers/email-worker$ docker-compose down
+Stopping email-worker_db_1 ... done
+Removing email-worker_db_1 ... done
+Removing network email-worker_default
+catalunha@pop-os:~/dockers/email-worker$ docker-compose up -d
+Creating network "email-worker_default" with the default driver
+Creating email-worker_db_1       ... done
+Creating email-worker_frontend_1 ... done
+catalunha@pop-os:~/dockers/email-worker$ 
+
+## 4
+catalunha@pop-os:~/dockers/email-worker$ docker-compose up -d
+Creating network "email-worker_default" with the default driver
+Creating email-worker_db_1       ... done
+Creating email-worker_frontend_1 ... done
+Creating email-worker_app_1      ... done
+catalunha@pop-os:~/dockers/email-worker$ docker-compose logs -f -t
+
+# 5
