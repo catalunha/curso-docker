@@ -318,3 +318,27 @@ catalunha@pop-os:~/dockers/email-worker$ docker-compose exec db psql -U postgres
 # 6
 catalunha@pop-os:~/dockers/email-worker$ docker-compose up -d --scale worker=3
 catalunha@pop-os:~/dockers/email-worker$ docker-compose logs -f -t worker
+
+
+# Acessando o container via terminal
+catalunha@pop-os:~$ docker exec -t -i email-worker_db_1 /bin/bash
+root@b5b224eee2a2:/# ls
+bin   docker-entrypoint-initdb.d  home	 media	proc  sbin     sys  var
+boot  docker-entrypoint.sh	  lib	 mnt	root  scripts  tmp
+dev   etc			  lib64  opt	run   srv      usr
+root@b5b224eee2a2:/# psql
+psql: connection to server on socket "/var/run/postgresql/.s.PGSQL.5432" failed: FATAL:  role "root" does not exist
+root@b5b224eee2a2:/# psql -U postgres -d email_sender
+psql (9.6.24)
+Type "help" for help.
+
+email_sender=# \c
+You are now connected to database "email_sender" as user "postgres".
+email_sender=# \dt
+         List of relations
+ Schema |  Name  | Type  |  Owner   
+--------+--------+-------+----------
+ public | emails | table | postgres
+(1 row)
+
+email_sender=# 
