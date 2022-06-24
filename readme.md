@@ -313,3 +313,4 @@ Creating email-worker_app_1      ... done
 catalunha@pop-os:~/dockers/email-worker$ docker-compose logs -f -t
 
 # 5
+catalunha@pop-os:~/dockers/email-worker$ docker-compose exec db psql -U postgres -d email_sender -c 'select * from emails'

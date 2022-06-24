@@ -3,7 +3,7 @@ volumes:
   dados:
 networks:
   banco:
-  web:  
+  web:
 services:
   db:
     image: postgres:9.6
