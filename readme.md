@@ -5,6 +5,9 @@ https://github.com/cod3rcursos/curso-docker
 https://docs.docker.com/
 hub.docker.com
 
+
+
+
 # install 
 https://docs.docker.com/engine/install/ubuntu/
 ```
@@ -31,6 +34,9 @@ sudo apt-get install docker-ce docker-ce-cli containerd.io docker-compose-plugin
 sudo usermod -a -G docker $USER
 
 ```
+
+# tutoriais
+https://www.youtube.com/watch?v=AVNADGzXrrQ
 
 # teste
 

@@ -11,20 +11,19 @@ docker container logs containerXName
 docker container ls -a
 docker container restart containerXName
 docker container rm containerXName
-docker container run --name containerXName -it containerX commandX
-docker container run --rm --net none containerX commandX
-docker container run --rm containerX commandX
-docker container run -d --name containerXName --net host containerX sleep 1000
-docker container run -d --name containerXName --net networkX containerX sleep 1000
-docker container run -d --name containerXName -p portHost:portContainer -v pathHost:pathContainer
-docker container run -d --name containerXName containerX sleep 1000
-docker container run -it  containerX commandX
+docker container run --name containerXName -it imageName commandX
+docker container run --rm --net none imageName commandX
+docker container run --rm imageName commandX
+docker container run -d --name containerXName --net host imageName sleep 1000
+docker container run -d --name containerXName --net networkX imageName sleep 1000
+docker container run -d --name containerXName -p portHost:portContainer -v pathHost:pathContainer imageName
+docker container run -d --name containerXName imageName sleep 1000
+docker container run -it  imageName commandX
 docker container run -it --volumes-from=containerYName containerY cat /pathLogs
-docker container run -p portHost:portContainer -v pathHost:pathContainer containerX
-docker container run -p portHost:portContainer containerXName
-docker container run containerX
-docker container run containerX commandX
-docker container run containerXName commandX
+docker container run -p portHost:portContainer -v pathHost:pathContainer imageName
+docker container run -p portHost:portContainer imageName
+docker container run imageName
+docker container run imageName commandX
 docker container start -ai containerXName
 docker container start containerXName
 docker container stop containerXName
@@ -99,7 +98,7 @@ docker image push catalunha/imageX:imageVersion
 docker login --username=catalunha
 
 
-# commandX
+# comandos para cada imagem
 
 ## debian
 bash
@@ -110,6 +109,7 @@ ifconfig
 ## alpine
 ash -c 'ifconfig'
 ifconfig
+ash
 
 ## nginx
 echo '<h1>Hello<h1>' > /usr/share/nginx/html/index.html
@@ -120,3 +120,12 @@ db psql -U postgres -c '\l'
 db psql -U postgres -d databaseName -c 'SQL'
 db psql -U postgres -f /scripts.sql
 db psql -U postgres -f /scripts/check.sql
+
+# paths importantes em cada imagem
+
+
+## nginx
+* /usr/share/nginx/html
+  * Páginas html
+* /etc/nginx/conf.d
+  * Pasta com config 
